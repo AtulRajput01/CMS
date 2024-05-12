@@ -133,7 +133,17 @@ app.delete('/entity/:entityName/:id', (req, res) => {
     });
 });
 
-
+app.get('/entities', (req, res) => {
+    connection.query("SHOW TABLES", (err, results) => {
+        if (err) {
+            console.error('Error fetching tables:', err);
+            res.status(500).send('Error fetching tables');
+        } else {
+            const tables = results.map(result => result[`Tables_in_${connection.config.database}`]);
+            res.json(tables);
+        }
+    });
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
