@@ -1,0 +1,3 @@
+[submodule "EntityForge"]
+	path = EntityForge
+	url = https://github.com/AtulRajput01/EntityForge.git
