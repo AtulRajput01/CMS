@@ -40,7 +40,6 @@ To get started with the project, follow these steps:
 ![Screenshot from 2024-05-13 12-39-04](https://github.com/AtulRajput01/CMS/assets/92659293/11d4770c-71f2-492e-aad1-e85070ce3f45)
 
 
-
 ### Managing Data
 
 1. Select an entity from the list.
@@ -56,12 +55,6 @@ To get started with the project, follow these steps:
 - **Frontend:** React.js
 - **Backend:** Node.js
 - **Database:** MySQL
-
-## Notes
-
-- This is a basic implementation intended for learning purposes.
-- Ensure to handle authentication and authorization for production use.
-- Feel free to explore and expand the functionality according to your needs.
 
 ## Contributors
 
