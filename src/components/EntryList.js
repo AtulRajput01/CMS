@@ -32,15 +32,33 @@ function EntryList() {
         }
     };
 
+    // Handle entry update
+    const handleUpdate = async (id) => {
+        try {
+            // Fetch the entry data based on its ID
+            const response = await axios.get(`http://localhost:3000/entity/${entityName}/${id}`);
+            const entryData = response.data;
+
+            // Navigate to the update entry form with the entry data
+            navigate(`/entity/${entityName}/form/${id}`, { state: { entryData } });
+        } catch (error) {
+            console.error('Error fetching entry data for update:', error);
+        }
+    };
+
     return (
         <div>
             <h2>{entityName} Entries</h2>
             <ul>
                 {entries.map((entry) => (
                     <li key={entry.id}>
+                        {/* Link to update entry form */}
                         <Link to={`/entity/${entityName}/form/${entry.id}`}>
                             {JSON.stringify(entry)}
                         </Link>
+                        {/* Button to trigger entry update */}
+                        <button onClick={() => handleUpdate(entry.id)}>Update</button>
+                        {/* Button to trigger entry deletion */}
                         <button onClick={() => handleDelete(entry.id)}>Delete</button>
                     </li>
                 ))}

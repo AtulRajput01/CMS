@@ -1,54 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function UpdateEntry() {
     const { entityName, id } = useParams();
     const [entryData, setEntryData] = useState({});
-    const history = useHistory();
+    const [formData, setFormData] = useState({});
 
+    // Fetch entry details
     useEffect(() => {
         const fetchEntry = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/entity/${entityName}/${id}`);
                 setEntryData(response.data);
+                // Initialize form data with current entry values
+                setFormData(response.data);
             } catch (error) {
-                alert('Error fetching entry data');
+                console.error('Error fetching entry:', error);
             }
         };
+
         fetchEntry();
     }, [entityName, id]);
 
-    const updateEntry = async () => {
-        try {
-            await axios.put(`http://localhost:3000/entity/${entityName}/${id}`, entryData);
-            alert('Entry updated successfully');
-            history.push(`/entity/${entityName}`);
-        } catch (error) {
-            alert('Error updating entry');
-        }
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setEntryData({ ...entryData, [name]: value });
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Send PUT request to update entry
+            await axios.put(`http://localhost:3000/entity/${entityName}/${id}`, formData);
+            alert('Entry updated successfully!');
+        } catch (error) {
+            console.error('Error updating entry:', error);
+            alert('Error updating entry. Please try again.');
+        }
     };
 
     return (
         <div>
             <h2>Update Entry</h2>
-            {Object.keys(entryData).map((key) => (
-                <div key={key}>
-                    <label>{key}:</label>
+            <form onSubmit={handleSubmit}>
+                {/* Display form fields for each attribute */}
+                <div>
+                    <label>Name:</label>
                     <input
                         type="text"
-                        name={key}
-                        value={entryData[key]}
+                        name="name"
+                        value={formData.name || ''}
                         onChange={handleChange}
                     />
                 </div>
-            ))}
-            <button onClick={updateEntry}>Update</button>
+                <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email || ''}
+                        onChange={handleChange}
+                    />
+                </div>
+                {/* Add additional fields for other attributes */}
+                <button type="submit">Update Entry</button>
+            </form>
         </div>
     );
 }
